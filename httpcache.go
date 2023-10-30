@@ -9,7 +9,6 @@ import (
 	"bufio"
 	"bytes"
 	"errors"
-	"fmt"
 	"io"
 	"net/http"
 	"net/http/httputil"
@@ -104,9 +103,17 @@ type Transport struct {
 	MarkCachedResponses bool
 }
 
+type TransportOption func(*Transport)
+
+func WithTransport(transport http.RoundTripper) TransportOption {
+	return func(t *Transport) {
+		t.Transport = transport
+	}
+}
+
 // NewTransport returns a new Transport with the
 // provided Cache implementation and MarkCachedResponses set to true
-func NewTransport(c Cache) *Transport {
+func NewTransport(c Cache, options ...TransportOption) *Transport {
 	return &Transport{Cache: c, MarkCachedResponses: true}
 }
 
@@ -228,7 +235,6 @@ func (t *Transport) RoundTrip(req *http.Request) (resp *http.Response, err error
 		}
 
 		respBytes, err := httputil.DumpResponse(resp, true)
-		fmt.Println("???", respBytes, err)
 		if err == nil {
 			t.Cache.Set(cacheKey, respBytes)
 		}
