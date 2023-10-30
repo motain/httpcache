@@ -9,6 +9,7 @@ import (
 	"bufio"
 	"bytes"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"net/http/httputil"
@@ -225,25 +226,11 @@ func (t *Transport) RoundTrip(req *http.Request) (resp *http.Response, err error
 				resp.Header.Set(fakeHeader, reqValue)
 			}
 		}
-		switch req.Method {
-		case "GET":
-			// Delay caching until EOF is reached.
-			resp.Body = &cachingReadCloser{
-				R: resp.Body,
-				OnEOF: func(r io.Reader) {
-					resp := *resp
-					resp.Body = io.NopCloser(r)
-					respBytes, err := httputil.DumpResponse(&resp, true)
-					if err == nil {
-						t.Cache.Set(cacheKey, respBytes)
-					}
-				},
-			}
-		default:
-			respBytes, err := httputil.DumpResponse(resp, true)
-			if err == nil {
-				t.Cache.Set(cacheKey, respBytes)
-			}
+
+		respBytes, err := httputil.DumpResponse(resp, true)
+		fmt.Println("???", respBytes, err)
+		if err == nil {
+			t.Cache.Set(cacheKey, respBytes)
 		}
 	} else {
 		t.Cache.Delete(cacheKey)
