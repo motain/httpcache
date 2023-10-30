@@ -1,0 +1,70 @@
+=== RUN   TestCacheableMethod
+--- PASS: TestCacheableMethod (0.00s)
+=== RUN   TestDontServeHeadResponseToGetRequest
+--- PASS: TestDontServeHeadResponseToGetRequest (0.00s)
+=== RUN   TestDontStorePartialRangeInCache
+--- PASS: TestDontStorePartialRangeInCache (0.00s)
+=== RUN   TestGetOnlyIfCachedHit
+--- PASS: TestGetOnlyIfCachedHit (0.00s)
+=== RUN   TestGetOnlyIfCachedMiss
+--- PASS: TestGetOnlyIfCachedMiss (0.00s)
+=== RUN   TestGetNoStoreRequest
+--- PASS: TestGetNoStoreRequest (0.00s)
+=== RUN   TestGetNoStoreResponse
+--- PASS: TestGetNoStoreResponse (0.00s)
+=== RUN   TestGetWithEtag
+--- PASS: TestGetWithEtag (0.00s)
+=== RUN   TestGetWithLastModified
+--- PASS: TestGetWithLastModified (0.00s)
+=== RUN   TestGetWithVary
+--- PASS: TestGetWithVary (0.00s)
+=== RUN   TestGetWithDoubleVary
+--- PASS: TestGetWithDoubleVary (0.00s)
+=== RUN   TestGetWith2VaryHeaders
+--- PASS: TestGetWith2VaryHeaders (0.00s)
+=== RUN   TestGetVaryUnused
+--- PASS: TestGetVaryUnused (0.00s)
+=== RUN   TestUpdateFields
+--- PASS: TestUpdateFields (0.00s)
+=== RUN   TestCachedErrorsKeepStatus
+--- PASS: TestCachedErrorsKeepStatus (0.00s)
+=== RUN   TestParseCacheControl
+--- PASS: TestParseCacheControl (0.00s)
+=== RUN   TestNoCacheRequestExpiration
+--- PASS: TestNoCacheRequestExpiration (0.00s)
+=== RUN   TestNoCacheResponseExpiration
+--- PASS: TestNoCacheResponseExpiration (0.00s)
+=== RUN   TestReqMustRevalidate
+--- PASS: TestReqMustRevalidate (0.00s)
+=== RUN   TestRespMustRevalidate
+--- PASS: TestRespMustRevalidate (0.00s)
+=== RUN   TestFreshExpiration
+--- PASS: TestFreshExpiration (0.00s)
+=== RUN   TestMaxAge
+--- PASS: TestMaxAge (0.00s)
+=== RUN   TestMaxAgeZero
+--- PASS: TestMaxAgeZero (0.00s)
+=== RUN   TestBothMaxAge
+--- PASS: TestBothMaxAge (0.00s)
+=== RUN   TestMinFreshWithExpires
+--- PASS: TestMinFreshWithExpires (0.00s)
+=== RUN   TestEmptyMaxStale
+--- PASS: TestEmptyMaxStale (0.00s)
+=== RUN   TestMaxStaleValue
+--- PASS: TestMaxStaleValue (0.00s)
+=== RUN   TestGetEndToEndHeaders
+--- PASS: TestGetEndToEndHeaders (0.00s)
+=== RUN   TestStaleIfErrorRequest
+--- PASS: TestStaleIfErrorRequest (0.00s)
+=== RUN   TestStaleIfErrorRequestLifetime
+--- PASS: TestStaleIfErrorRequestLifetime (0.00s)
+=== RUN   TestStaleIfErrorResponse
+--- PASS: TestStaleIfErrorResponse (0.00s)
+=== RUN   TestStaleIfErrorResponseLifetime
+--- PASS: TestStaleIfErrorResponseLifetime (0.00s)
+=== RUN   TestStaleIfErrorKeepsStatus
+--- PASS: TestStaleIfErrorKeepsStatus (0.00s)
+=== RUN   TestClientTimeout
+--- PASS: TestClientTimeout (1.00s)
+PASS
+ok  	github.com/minhajonefootball75/httpcache	3.473s

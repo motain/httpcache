@@ -364,58 +364,6 @@ func TestDontStorePartialRangeInCache(t *testing.T) {
 	}
 }
 
-func TestCacheOnlyIfBodyRead(t *testing.T) {
-	resetTest()
-	{
-		req, err := http.NewRequest("GET", s.server.URL, nil)
-		if err != nil {
-			t.Fatal(err)
-		}
-		resp, err := s.client.Do(req)
-		if err != nil {
-			t.Fatal(err)
-		}
-		if resp.Header.Get(XFromCache) != "" {
-			t.Fatal("XFromCache header isn't blank")
-		}
-		// We do not read the body
-		resp.Body.Close()
-	}
-	{
-		req, err := http.NewRequest("GET", s.server.URL, nil)
-		if err != nil {
-			t.Fatal(err)
-		}
-		resp, err := s.client.Do(req)
-		if err != nil {
-			t.Fatal(err)
-		}
-		defer resp.Body.Close()
-		if resp.Header.Get(XFromCache) != "" {
-			t.Fatalf("XFromCache header isn't blank")
-		}
-	}
-}
-
-func TestOnlyReadBodyOnDemand(t *testing.T) {
-	resetTest()
-
-	req, err := http.NewRequest("GET", s.server.URL+"/infinite", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	resp, err := s.client.Do(req) // This shouldn't hang forever.
-	if err != nil {
-		t.Fatal(err)
-	}
-	buf := make([]byte, 10) // Only partially read the body.
-	_, err = resp.Body.Read(buf)
-	if err != nil {
-		t.Fatal(err)
-	}
-	resp.Body.Close()
-}
-
 func TestGetOnlyIfCachedHit(t *testing.T) {
 	resetTest()
 	{

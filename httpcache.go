@@ -9,7 +9,6 @@ import (
 	"bufio"
 	"bytes"
 	"errors"
-	"io"
 	"net/http"
 	"net/http/httputil"
 	"strings"
@@ -107,6 +106,10 @@ type TransportOption func(*Transport)
 
 func WithTransport(transport http.RoundTripper) TransportOption {
 	return func(t *Transport) {
+		if transport == nil {
+			t.Transport = http.DefaultTransport
+			return
+		}
 		t.Transport = transport
 	}
 }
@@ -114,7 +117,12 @@ func WithTransport(transport http.RoundTripper) TransportOption {
 // NewTransport returns a new Transport with the
 // provided Cache implementation and MarkCachedResponses set to true
 func NewTransport(c Cache, options ...TransportOption) *Transport {
-	return &Transport{Cache: c, MarkCachedResponses: true}
+	t := &Transport{Cache: c, MarkCachedResponses: true}
+	for _, option := range options {
+		option(t)
+	}
+
+	return t
 }
 
 // Client returns an *http.Client that caches responses.
@@ -508,31 +516,6 @@ func headerAllCommaSepValues(headers http.Header, name string) []string {
 // cachingReadCloser is a wrapper around ReadCloser R that calls OnEOF
 // handler with a full copy of the content read from R when EOF is
 // reached.
-type cachingReadCloser struct {
-	// Underlying ReadCloser.
-	R io.ReadCloser
-	// OnEOF is called with a copy of the content of R when EOF is reached.
-	OnEOF func(io.Reader)
-
-	buf bytes.Buffer // buf stores a copy of the content of R.
-}
-
-// Read reads the next len(p) bytes from R or until R is drained. The
-// return value n is the number of bytes read. If R has no data to
-// return, err is io.EOF and OnEOF is called with a full copy of what
-// has been read so far.
-func (r *cachingReadCloser) Read(p []byte) (n int, err error) {
-	n, err = r.R.Read(p)
-	r.buf.Write(p[:n])
-	if err == io.EOF {
-		r.OnEOF(bytes.NewReader(r.buf.Bytes()))
-	}
-	return n, err
-}
-
-func (r *cachingReadCloser) Close() error {
-	return r.R.Close()
-}
 
 // NewMemoryCacheTransport returns a new Transport using the in-memory cache implementation
 func NewMemoryCacheTransport() *Transport {
