@@ -1,3 +1,3 @@
-module github.com/minhajonefootball75/httpcache
+module github.com/motain/httpcache
 
 go 1.21.1
